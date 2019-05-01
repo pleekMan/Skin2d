@@ -13,9 +13,11 @@ public class Skin2D {
 	ArrayList<SkinShape> skinShapes;
 	int selectedShape = 0;
 
-	private enum mode {
-		ADD_PIVOT, EDIT_WEIGHTS
+	public enum EditMode {
+		NO_EDIT, ADD_PIVOT, SELECT_ELEMENTS, EDIT_WEIGHTS
 	}; // TODO FOR LATER
+
+	EditMode editMode;
 
 	public Skin2D(PApplet parent) {
 		p5 = parent;
@@ -23,6 +25,8 @@ public class Skin2D {
 
 		p5.registerMethod("mouseEvent", this);
 		p5.registerMethod("keyEvent", this);
+		
+		editMode = EditMode.EDIT_WEIGHTS; 
 
 	}
 
@@ -52,6 +56,21 @@ public class Skin2D {
 		// TODO GET BY NAME
 		return skinShapes.get(0);
 	}
+	
+	public void setMode(EditMode mode){
+		editMode = mode;
+	}
+	
+	private void selectElements(int x, int y){
+		// TODO SELECT SkinShapes BASED ON THEIR BOUNDING-BOX
+		// FOR NOW, JUST 1 SHAPE
+
+		SkinShape sShape = skinShapes.get(selectedShape);
+		sShape.selectElements(x, y);
+		
+
+		
+	}
 
 	public void mouseEvent(MouseEvent event) {
 		int x = event.getX();
@@ -59,8 +78,14 @@ public class Skin2D {
 		int button = event.getButton();
 
 		switch (event.getAction()) {
+
 		case MouseEvent.PRESS:
-				p5.println("Mouse Pressed");
+			
+			//p5.println("Mouse Pressed");
+			if (editMode==EditMode.SELECT_ELEMENTS) {
+				selectElements(x,y);
+			}
+			
 			break;
 		case MouseEvent.RELEASE:
 			// do something for mouse released
@@ -76,29 +101,29 @@ public class Skin2D {
 			break;
 		}
 	}
-	
-	public void keyEvent(KeyEvent event){
-		
-		char key = event.getKey();
-		
-		// TODO IF IN DEBUG MODE ONLY
-		
-		  switch (event.getAction()) {
-		    case KeyEvent.PRESS:
-				p5.println("-| KeyPressed -> " + key);
-				
-				skinShapes.get(selectedShape).onKeyPressed(key);
-				
-				if(event.getKeyCode() == p5.LEFT){
-					
-				}
-				
-		      break;
-		    case KeyEvent.RELEASE:
-				p5.println("-| KeyReleased -> " + key);
-		      break;
 
-		  }
+	public void keyEvent(KeyEvent event) {
+
+		char key = event.getKey();
+
+		// TODO IF IN DEBUG MODE ONLY
+
+		switch (event.getAction()) {
+		case KeyEvent.PRESS:
+			p5.println("-| KeyPressed -> " + key);
+
+			skinShapes.get(selectedShape).onKeyPressed(key);
+
+			if (event.getKeyCode() == p5.LEFT) {
+
+			}
+
+			break;
+		case KeyEvent.RELEASE:
+			p5.println("-| KeyReleased -> " + key);
+			break;
+
+		}
 	}
 
 }

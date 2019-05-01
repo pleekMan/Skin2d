@@ -163,6 +163,27 @@ public class SkinShape {
 		pivots.get(_id).getPosition().set(pos);
 	}
 	
+	public void selectElements(int x, int y){
+		
+		// FIRST CHECK PIVOTS
+		for (int i=0; i<pivots.size();i++) {
+			SkinPivot pivot = pivots.get(i);
+			float distance = p5.dist(pivot.getPosePosition().x, pivot.getPosePosition().y, x,y);
+			if (distance < 8) {
+				selectedPivot = i;
+			}
+		}
+		
+		// THEN CHECK POINTS
+		for (int i=0; i<points.size();i++) {
+			SkinPoint point = points.get(i);
+			float distance = p5.dist(point.getPosePosition().x, point.getPosePosition().y, x,y);
+			if (distance < 8) {
+				selectedPoint = i;
+			}
+		}
+	}
+	
 	private void drawPivots(){
 		
 		p5.noFill();

@@ -97,6 +97,10 @@ public class Main extends PApplet {
 			SkinShape circulo = skin2d.getSkinShape(0);
 			circulo.bindByDistance(300);
 		}
+		
+		if(key == 's' || key == 'S'){
+			skin2d.setMode(Skin2D.EditMode.SELECT_ELEMENTS);
+		}
 	}
 
 	public void mousePressed() {
@@ -112,11 +116,11 @@ public class Main extends PApplet {
 	}
 
 	public void mouseDragged() {
-		
-		SkinShape circulo = skin2d.getSkinShape(0);
-		
-		circulo.setPivot(circulo.getSelectedPivotID(), new PVector(mouseX, mouseY) );
-		
+		println("-|| DRAGGING MOUSE");
+		//if (button == 2) {
+			SkinShape circulo = skin2d.getSkinShape(0);
+			circulo.setPivot(circulo.getSelectedPivotID(), new PVector(mouseX, mouseY) );
+		//}
 		
 	}
 
