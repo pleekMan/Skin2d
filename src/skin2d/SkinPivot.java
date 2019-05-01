@@ -17,8 +17,9 @@ public class SkinPivot {
 	}
 
 	public int getId(){return pivotId;}
-	public PVector getPosition(){return position;}
 	public PVector getPosePosition(){return posePosition;}
+	public PVector getPosition(){return position;}
+	public PVector getTranslation(){return PVector.sub(getPosition(),getPosePosition());}
 	public float getRotation(){return rotation;}
 	
 	

@@ -1,37 +1,43 @@
 package main;
 
 import processing.core.*;
-import skin2d.Skin2d;
+import skin2d.Skin2D;
+import skin2d.SkinShape;
 
 public class Main extends PApplet {
 
-	Skin2d skin;
+	Skin2D skin2d;
 	PShape circleShape;
 
 	public void settings() {
-		size(500, 500, P2D);
+		size(800, 800, P2D);
 	}
 
 	public void setup() {
 
+		frameRate(30);
 		
 		
 		createCircle();
 		
-		skin = new Skin2d(this, circleShape);
+		skin2d = new Skin2D(this);
+		skin2d.addSkinShape(circleShape, "circulo");
 
 	}
 
 	public void draw() {
 		background(0);
 		
-		skin.setPivot(0, new PVector(mouseX, mouseY));
-		skin.update();
+		skin2d.update();
 		
-		//circleShape.setVertex(0, mouseX, mouseY);
+		SkinShape circulo = skin2d.getSkinShape(0);
+		
+		PVector pivotMotion = new PVector(width * 0.5f, (sin(frameCount * 0.05f) * 100) + (height * 0.5f));
+		circulo.setPivot(0, pivotMotion);
+		
 		shape(circleShape);
 		
-		skin.drawDebug();
+		skin2d.drawDebug();
 		
 		drawMouseCoordinates();
 
@@ -47,7 +53,7 @@ public class Main extends PApplet {
 	    
 	    //circleShape = createShape(ELLIPSE, center.x, center.y,200,200);
 	    circleShape = createShape();
-	    circleShape.setFill(color(random(255)));
+	    circleShape.setFill(color(0,200,150));
 	    
 	    circleShape.beginShape();
 	    for (int i=0; i<res; i++) {
@@ -76,9 +82,27 @@ public class Main extends PApplet {
 			key = 0;
 		}
 		*/
+		
+		if(key == 'p' || key == 'P'){
+			SkinShape circulo = skin2d.getSkinShape(0);
+			circulo.addPivot(new PVector(mouseX,mouseY));
+		}
+		
+		if(key == 'c' || key == 'C'){
+			SkinShape circulo = skin2d.getSkinShape(0);
+			circulo.clearBindings();
+		}
+		
+		if(key == 'd' || key == 'D'){
+			SkinShape circulo = skin2d.getSkinShape(0);
+			circulo.bindByDistance(300);
+		}
 	}
 
 	public void mousePressed() {
+		
+	
+
 	}
 
 	public void mouseReleased() {
@@ -88,7 +112,12 @@ public class Main extends PApplet {
 	}
 
 	public void mouseDragged() {
-
+		
+		SkinShape circulo = skin2d.getSkinShape(0);
+		
+		circulo.setPivot(circulo.getSelectedPivotID(), new PVector(mouseX, mouseY) );
+		
+		
 	}
 
 	public void mouseMoved() {
